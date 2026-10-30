@@ -1,0 +1,382 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>PeriodT Coach Listing</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap">
+<style>
+/* Layout: an app store product page. Header, stat strip, a wrapping wall of
+   purple preview panels holding real app screenshots, then two-column copy. */
+:root {
+  --bg: #FFFFFF;
+  --ink: #411471;          /* CoreTokens.foreground */
+  --muted: #727272;        /* CoreTokens.secondaryForeground */
+  --rule: #EADCEF;
+  --panel: #9561A5;        /* CoreTokens.header */
+  --panel-text: #FFFFFF;
+  --panel-sub: #F5E6F8;
+  --surface: #F5E6F8;      /* CoreTokens.surface */
+  --accent: #FF754A;       /* CoreTokens.highlight */
+  --on-accent: #FFFFFF;
+  --peach: #FDCD9E;
+  --link: #9561A5;
+  --phone-edge: #2A172B;
+  --font-display: "Nunito", ui-rounded, "SF Pro Rounded", system-ui, sans-serif;
+  --font-body: "Nunito", system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #1A1A1A; --ink: #DBBFF0; --muted: #9A8FA3; --rule: #3A2A3E;
+    --panel: #3E2443; --panel-text: #F6F5F6; --panel-sub: #DBBFF0;
+    --surface: #2A172B; --link: #DBBFF0; --peach: #3E2443; --phone-edge: #000000;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #1A1A1A; --ink: #DBBFF0; --muted: #9A8FA3; --rule: #3A2A3E;
+  --panel: #3E2443; --panel-text: #F6F5F6; --panel-sub: #DBBFF0;
+  --surface: #2A172B; --link: #DBBFF0; --peach: #3E2443; --phone-edge: #000000;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body {
+  background: var(--bg); color: var(--ink);
+  font-family: var(--font-body); font-size: 16px; line-height: 1.45;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+.page { max-width: 1040px; margin: 0 auto; padding-block: 28px 56px; display: flex; flex-direction: column; gap: 28px; }
+h1, h2, h3 { font-family: var(--font-display); text-wrap: balance; margin: 0; }
+h2 { font-size: 24px; font-weight: 900; }
+p { margin: 0; }
+
+/* Header */
+.hero { display: flex; gap: 20px; align-items: flex-start; }
+.hero img.icon { width: 128px; height: 128px; border-radius: 28px; flex: none; box-shadow: 0 1px 0 var(--rule), 0 8px 24px rgba(65, 20, 113, .18); }
+.hero .meta { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 4px; }
+.hero h1 { font-size: 30px; font-weight: 900; line-height: 1.15; }
+.hero .sub { color: var(--muted); font-size: 16px; }
+.hero .row { display: flex; align-items: center; gap: 14px; margin-top: 12px; flex-wrap: wrap; }
+.get {
+  font: 800 16px var(--font-body); color: var(--on-accent); background: var(--accent);
+  border: 0; border-radius: 999px; padding: 7px 30px; cursor: pointer;
+}
+.get:focus-visible, .shot:focus-visible, .share:focus-visible { outline: 3px solid var(--link); outline-offset: 3px; }
+.hero .iap { color: var(--muted); font-size: 12px; }
+.share { background: none; border: 0; color: var(--link); cursor: pointer; padding: 4px; }
+
+/* Stat strip */
+.stats { display: grid; grid-template-columns: repeat(6, 1fr); border-block: 1px solid var(--rule); padding-block: 12px; }
+.stat { text-align: center; display: flex; flex-direction: column; gap: 2px; padding-inline: 8px; }
+.stat + .stat { border-left: 1px solid var(--rule); }
+.stat .k { font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.stat .v { font: 800 24px var(--font-display); font-variant-numeric: tabular-nums; }
+.stat .s { font-size: 12px; color: var(--muted); }
+.stat svg { display: block; margin: 4px auto 2px; }
+
+/* Preview wall */
+/* Each panel's --w is its Figma width; two panels plus the 16px gap fill a
+   1037px row exactly, so the rows match Figma and still wrap on phones. */
+.wall { display: flex; flex-wrap: wrap; gap: 16px; }
+.panel {
+  --w: 500;
+  background:
+    linear-gradient(rgba(114, 114, 114, .17), rgba(114, 114, 114, .17)),
+    radial-gradient(farthest-corner, rgba(255, 255, 255, 0) 0%, rgba(162, 116, 179, .2) 55%, rgba(255, 255, 255, .2) 100%),
+    var(--panel);
+  color: var(--panel-text); border-radius: 26px;
+  padding: 16px 16px 18px; display: flex; flex-direction: column; gap: 10px;
+  flex: var(--w) 1 calc(var(--w) * 1px);
+}
+.panel.team {
+  background:
+    linear-gradient(rgba(114, 114, 114, .17), rgba(114, 114, 114, .17)),
+    radial-gradient(farthest-corner, rgba(219, 191, 240, .2) 30%, rgba(65, 20, 113, .2) 100%),
+    var(--panel);
+}
+.panel h3 { font-size: 16px; font-weight: 800; text-align: center; }
+.panel .shots { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+figure { margin: 0; display: flex; flex-direction: column; gap: 8px; align-items: center; }
+figcaption { font-size: 12.5px; font-weight: 600; color: var(--panel-sub); text-align: center; max-width: 150px; }
+.shot {
+  display: block; padding: 0; border: 4px solid var(--phone-edge); background: var(--phone-edge);
+  border-radius: 26px; overflow: hidden; cursor: zoom-in; width: 150px; max-width: 100%;
+}
+.shot img { display: block; width: 100%; aspect-ratio: 1206 / 2622; object-fit: cover; border-radius: 21px; }
+.alerts { display: flex; flex-direction: column; align-items: center; gap: 24px; width: 300px; max-width: 100%; }
+.alerts img { display: block; max-width: 100%; }
+.alerts .large { width: 196px; }
+.alerts .row2 { display: flex; gap: 12px; align-items: flex-start; justify-content: center; }
+.alerts .small { width: 105px; border-radius: 18px; }
+.alerts .notif { width: 177px; margin-top: 4px; }
+
+.devices { display: flex; align-items: center; gap: 10px; color: var(--muted); font-size: 14px; border-bottom: 1px solid var(--rule); padding-bottom: 14px; }
+
+/* Body copy */
+.cols { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+.col { min-width: 0; display: flex; flex-direction: column; gap: 28px; }
+.blurb { font-size: 17px; max-width: 62ch; }
+.dev { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--rule); padding-bottom: 12px; }
+.dev a { color: var(--link); font-weight: 700; text-decoration: none; }
+.dev small { display: block; color: var(--muted); font-size: 13px; }
+section { display: flex; flex-direction: column; gap: 12px; }
+ul, ol { margin: 0; padding-left: 1.3em; display: flex; flex-direction: column; gap: 6px; }
+li::marker { color: var(--accent); font-weight: 800; }
+li b { font-weight: 800; }
+.ext { display: flex; flex-direction: column; gap: 14px; }
+.ext h3 { font-size: 17px; font-weight: 800; }
+.ext p { color: var(--muted); font-size: 14px; }
+
+/* Ratings */
+.score { display: flex; justify-content: space-between; align-items: flex-end; gap: 16px; }
+.score .big { font: 900 72px/1 var(--font-display); font-variant-numeric: tabular-nums; }
+.score .of { color: var(--muted); font-size: 14px; font-weight: 700; }
+.stars { color: var(--accent); letter-spacing: 2px; font-size: 20px; }
+.score .right { text-align: right; }
+.score .right .n { color: var(--muted); font-weight: 700; }
+.bars { display: grid; grid-template-columns: auto 1fr; gap: 3px 8px; align-items: center; font-size: 11px; color: var(--muted); width: min(220px, 100%); margin-left: auto; }
+.bars span.b { height: 4px; border-radius: 2px; background: var(--surface); position: relative; overflow: hidden; }
+.bars span.b i { position: absolute; inset: 0 auto 0 0; background: var(--muted); border-radius: 2px; }
+.reviews { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.review { background: var(--surface); border-radius: 18px; padding: 16px; display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.review h4 { margin: 0; font: 800 16px var(--font-display); }
+.review .by { font-size: 12.5px; color: var(--muted); }
+.review .by .stars { font-size: 13px; letter-spacing: 1px; }
+.review p { font-size: 14px; color: var(--muted); }
+.note { font-size: 12px; color: var(--muted); }
+
+dl.tech { margin: 0; display: grid; grid-template-columns: auto 1fr; }
+dl.tech dt, dl.tech dd { margin: 0; padding-block: 11px; border-bottom: 1px solid var(--rule); font-size: 15px; }
+dl.tech dt { color: var(--muted); padding-right: 16px; }
+dl.tech dd { text-align: right; font-weight: 700; }
+
+/* Lightbox */
+.lightbox { position: fixed; inset: 0; background: rgba(26, 10, 32, .86); display: flex; align-items: center; justify-content: center; padding: 24px; z-index: 20; cursor: zoom-out; }
+.lightbox[hidden] { display: none; }
+.lightbox img { max-height: 92vh; max-width: 100%; border-radius: 28px; border: 6px solid #000; }
+
+@media (max-width: 760px) {
+  .cols, .reviews { grid-template-columns: 1fr; }
+  .stats { grid-template-columns: repeat(3, 1fr); row-gap: 14px; }
+  .stat:nth-child(4) { border-left: 0; }
+  .hero img.icon { width: 96px; height: 96px; border-radius: 22px; }
+  .hero h1 { font-size: 24px; }
+  .shot { width: 128px; }
+  figcaption { max-width: 128px; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .shot { transition: transform .18s ease; }
+  .shot:hover { transform: translateY(-3px); }
+}
+</style>
+</head>
+<body>
+
+<main class="page">
+  <header class="hero">
+    <img class="icon" src="img/icon.png" alt="PeriodT Coach app icon">
+    <div class="meta">
+      <h1>PeriodT Coach: Train With the Cycle</h1>
+      <p class="sub">Plan training around how your athletes feel, and talk openly about menstrual health.</p>
+      <div class="row">
+        <button class="get" id="get" type="button">Get</button>
+        <span class="iap">Free · For coaches and support staff</span>
+        <button class="share" id="share" type="button" aria-label="Copy link to this listing">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="M7 8l5-5 5 5"/><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7"/></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div class="stats" role="list">
+    <div class="stat" role="listitem"><span class="k">Sample ratings</span><span class="v">4.8</span><span class="stars" style="font-size:12px">★★★★★</span></div>
+    <div class="stat" role="listitem"><span class="k">Age</span><span class="v">12+</span><span class="s">Years Old</span></div>
+    <div class="stat" role="listitem"><span class="k">Category</span><span class="v">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12h4l3-7 4 14 3-7h4"/></svg></span><span class="s">Health &amp; Fitness</span></div>
+    <div class="stat" role="listitem"><span class="k">Developer</span><span class="v">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="9" cy="8" r="3.2"/><circle cx="17" cy="9" r="2.4"/><path d="M3 19c0-3.3 2.7-5.5 6-5.5s6 2.2 6 5.5"/><path d="M15.5 14.2c2.9 0 5.5 1.8 5.5 4.8"/></svg></span><span class="s">PeriodT Team</span></div>
+    <div class="stat" role="listitem"><span class="k">Language</span><span class="v">EN</span><span class="s">English</span></div>
+    <div class="stat" role="listitem"><span class="k">Size</span><span class="v">36</span><span class="s">MB</span></div>
+  </div>
+
+  <section aria-labelledby="preview-h">
+    <h2 id="preview-h">Preview</h2>
+    <div class="wall">
+      <div class="panel team" style="--w: 429.5">
+        <h3>Team Views</h3>
+        <div class="shots">
+          <figure><button class="shot" type="button"><img src="img/01-overview.jpg" alt="Overview screen listing staff and athletes"></button><figcaption>Find any athlete or staff member</figcaption></figure>
+          <figure><button class="shot" type="button"><img src="img/02-team-summary.jpg" alt="Team Summary with reminders and a team readiness grid"></button><figcaption>See team readiness at a glance</figcaption></figure>
+        </div>
+      </div>
+      <div class="panel" style="--w: 591.5">
+        <h3>Athlete Views</h3>
+        <div class="shots">
+          <figure><button class="shot" type="button"><img src="img/03-athlete-readiness.jpg" alt="Athlete page with cycle phase and a monthly readiness calendar"></button><figcaption>Readiness through the month</figcaption></figure>
+          <figure><button class="shot" type="button"><img src="img/05-upcoming-goals.jpg" alt="Athlete journal, upcoming sessions and individual goals"></button><figcaption>Notes, sessions and goals</figcaption></figure>
+          <figure><button class="shot" type="button"><img src="img/06-session-expanded.jpg" alt="An upcoming session opened to show its exercises and intensities"></button><figcaption>Adjust a session's intensity</figcaption></figure>
+        </div>
+      </div>
+      <div class="panel" style="--w: 591.5">
+        <h3>Training Views</h3>
+        <div class="shots">
+          <figure><button class="shot" type="button"><img src="img/07-exercise-library.jpg" alt="Exercise Library categories"></button><figcaption>Browse the exercise library</figcaption></figure>
+          <figure><button class="shot" type="button"><img src="img/08-exercise-list.jpg" alt="Strength and Conditioning exercise list"></button><figcaption>Pick exercises by category</figcaption></figure>
+          <figure><button class="shot" type="button"><img src="img/09-exercise-detail.jpg" alt="Goblet Squat detail with video, coaching notes and intensity modes"></button><figcaption>Coaching cues for every intensity</figcaption></figure>
+        </div>
+      </div>
+      <div class="panel" style="--w: 429.5">
+        <h3>Female Library</h3>
+        <div class="shots">
+          <figure><button class="shot" type="button"><img src="img/10-female-library.jpg" alt="Female Library topics such as period pain and heavy periods"></button><figcaption>Learn about the cycle</figcaption></figure>
+          <figure><button class="shot" type="button"><img src="img/11-library-article.jpg" alt="Article on PCOS with guidance for coaches"></button><figcaption>Know how to help</figcaption></figure>
+        </div>
+      </div>
+      <div class="panel" style="--w: 561.5">
+        <h3>Dark Mode</h3>
+        <div class="shots">
+          <figure><button class="shot" type="button"><img src="img/12-dark-overview.jpg" alt="Overview screen in dark mode"></button><figcaption>Easy on the eyes</figcaption></figure>
+          <figure><button class="shot" type="button"><img src="img/13-dark-team.jpg" alt="Team Summary in dark mode"></button><figcaption>Every screen, day or night</figcaption></figure>
+        </div>
+      </div>
+      <div class="panel" style="--w: 459.5">
+        <h3>Widgets &amp; Alerts</h3>
+        <div class="shots">
+          <figure>
+            <div class="alerts">
+              <img class="large" src="figma/widget-checkin.png" alt="Large widget: Send a Check in, listing Beth Mead, Athlete 2, Athlete 3 and 3 more">
+              <div class="row2">
+                <img class="small" src="figma/widget-new-note.png" alt="Small widget: Monday 7, new note from Beth Mead">
+                <img class="notif" src="figma/notification.png" alt="Notification from PeriodT Coach: An Athlete sent a note, 3 more notifications">
+              </div>
+            </div>
+            <figcaption>Unopened notes on your Home Screen</figcaption>
+          </figure>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="devices">
+    <svg width="14" height="20" viewBox="0 0 14 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="1" y="1" width="12" height="18" rx="3"/><path d="M5 3.5h4"/></svg>
+    iPhone
+  </div>
+
+  <div class="cols">
+    <div class="col">
+      <p class="blurb">PeriodT Coach helps coaches and support staff train female athletes with their cycle, not against it. See how each athlete is feeling, read the notes they choose to share, and adjust upcoming sessions in a few taps. Built alongside the PeriodT athlete app, it keeps the conversation about menstrual health and wellbeing open, private and kind.</p>
+
+      <div class="dev">
+        <div><a href="#tech">PeriodT Team</a><small>Developer · UTS 40005 Advanced iOS</small></div>
+        <svg width="10" height="16" viewBox="0 0 10 16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M2 2l6 6-6 6"/></svg>
+      </div>
+
+      <section>
+        <h2>Features &amp; Functionalities</h2>
+        <ul>
+          <li><b>Team overview:</b> search your staff and athletes and open anyone's profile.</li>
+          <li><b>Team readiness:</b> a colour-coded grid shows each athlete's readiness score for the week.</li>
+          <li><b>Cycle-aware profiles:</b> see an athlete's current phase, monthly readiness calendar and latest check-in.</li>
+          <li><b>Notes and journal:</b> read what athletes choose to share and flag sessions that need a change.</li>
+          <li><b>Upcoming sessions:</b> swap exercises or set Low, Moderate or High intensity for strength, conditioning and physio work.</li>
+          <li><b>Exercise library:</b> videos, background and coaching cues, with sets and reps for each intensity.</li>
+          <li><b>Female Library:</b> plain-language guides on period pain, heavy periods, PCOS, FHA and training through the cycle.</li>
+          <li><b>Individual goals:</b> track progress toward each athlete's goals.</li>
+        </ul>
+      </section>
+
+      <section class="ext">
+        <h2>System Extensions</h2>
+        <div><h3>Notifications</h3><p>Get told when an athlete sends you a note, and tap it to open their profile straight away.</p></div>
+        <div><h3>Home Screen Widgets</h3><p>Small and large widgets show new and unopened notes from your athletes, so nothing slips past before training.</p></div>
+        <div><h3>Dark Mode</h3><p>Every screen has a matching dark design that follows your iPhone's appearance.</p></div>
+      </section>
+    </div>
+
+    <div class="col">
+      <section>
+        <h2>How to Use</h2>
+        <ol>
+          <li>Sign in with the coach account your club set up for you.</li>
+          <li>Open <b>Team Summary</b> to see reminders, announcements and how ready your squad is this week.</li>
+          <li>Tap an athlete to see their cycle phase, readiness calendar and the notes they've shared.</li>
+          <li>Open an upcoming session to change an exercise's intensity or swap it for another.</li>
+          <li>Use the <b>Exercise</b> and <b>Female Library</b> tabs to plan sessions and learn how to support each athlete.</li>
+        </ol>
+      </section>
+
+      <section>
+        <h2>Ratings &amp; Reviews</h2>
+        <div class="score">
+          <div><div class="big">4.8</div><div class="of">out of 5</div></div>
+          <div class="right">
+            <div class="stars">★★★★★</div>
+            <div class="bars" aria-hidden="true">
+              <span>★★★★★</span><span class="b"><i style="width:86%"></i></span>
+              <span>★★★★</span><span class="b"><i style="width:10%"></i></span>
+              <span>★★★</span><span class="b"><i style="width:3%"></i></span>
+              <span>★★</span><span class="b"><i style="width:1%"></i></span>
+              <span>★</span><span class="b"><i style="width:1%"></i></span>
+            </div>
+          </div>
+        </div>
+        <h3 style="font-size:17px;font-weight:800">Example Reviews</h3>
+        <div class="reviews">
+          <article class="review">
+            <h4>Changed how I plan the week</h4>
+            <div class="by"><span class="stars">★★★★★</span> · example review</div>
+            <p>Seeing readiness next to the cycle phase means I adjust intensity before a session goes wrong, not after.</p>
+          </article>
+          <article class="review">
+            <h4>Easier conversations</h4>
+            <div class="by"><span class="stars">★★★★★</span> · example review</div>
+            <p>The Female Library gave me the words to talk about periods with my squad without guessing.</p>
+          </article>
+        </div>
+        <p class="note">This is a mock listing for a university project. Ratings and reviews are illustrative, not from real users.</p>
+      </section>
+
+      <section id="tech">
+        <h2>Technical Details</h2>
+        <dl class="tech">
+          <dt>Developer</dt><dd>PeriodT Team</dd>
+          <dt>Category</dt><dd>Health &amp; Fitness</dd>
+          <dt>Version</dt><dd>1.0</dd>
+          <dt>Compatibility</dt><dd>iOS 17 and later</dd>
+          <dt>Device support</dt><dd>Optimised for iPhone</dd>
+          <dt>Privacy</dt><dd>Coaches see only what athletes share</dd>
+        </dl>
+      </section>
+    </div>
+  </div>
+</main>
+
+<div class="lightbox" id="lightbox" hidden><img id="lightbox-img" alt=""></div>
+
+<script>
+  const box = document.getElementById('lightbox');
+  const boxImg = document.getElementById('lightbox-img');
+  document.querySelectorAll('.shot').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const img = btn.querySelector('img');
+      boxImg.src = img.src; boxImg.alt = img.alt; box.hidden = false;
+    });
+  });
+  box.addEventListener('click', () => { box.hidden = true; });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') box.hidden = true; });
+
+  const get = document.getElementById('get');
+  get.addEventListener('click', () => { get.textContent = get.textContent === 'Get' ? 'Coming soon' : 'Get'; });
+
+  const share = document.getElementById('share');
+  share.addEventListener('click', async () => {
+    try { await navigator.clipboard.writeText(location.href.split('#')[0]); share.title = 'Link copied'; }
+    catch { share.title = 'Copy the address bar link to share'; }
+  });
+</script>
+</body>
+</html>
